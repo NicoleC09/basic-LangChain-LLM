@@ -267,6 +267,110 @@ We set it to 0.7 because it's the sweet spot.
 
 ---
 
+## Code Examples
+
+### Example 1: How the Chain Gets Created
+
+This is what happens inside `llm_chain.py`:
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+# Create the prompt template
+prompt = ChatPromptTemplate.from_template(
+    "Explain the following concept in simple terms: {concept}"
+)
+
+# Create the LLM model
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+
+# Connect them with the pipe operator
+chain = prompt | llm
+```
+
+That's it! Three simple steps and you have a working chain.
+
+### Example 2: How to Use the Chain
+
+Once the chain is created, using it is super easy:
+
+```python
+# Create the chain
+chain = create_chain()
+
+# Use it with any concept
+response = chain.invoke({"concept": "artificial intelligence"})
+
+# Print the result
+print(response.content)
+```
+
+The `invoke()` method takes a dictionary with your input and returns the model's response.
+
+### Example 3: Full Example from `main.py`
+
+Here's how the main app uses everything:
+
+```python
+from app.llm_chain import create_chain
+
+# Get the chain ready
+chain = create_chain()
+
+# Ask the user for input
+concept = input("Enter a concept you'd like me to explain: ").strip()
+
+# Send it through the chain
+response = chain.invoke({"concept": concept})
+
+# Print the answer nicely
+print("Explanation:")
+print(response.content)
+```
+
+### Example 4: Different Concepts You Can Try
+
+```python
+# You can use any of these as input:
+
+concepts = [
+    "quantum computing",
+    "blockchain technology",
+    "neural networks",
+    "climate change",
+    "cryptocurrency",
+    "photosynthesis",
+    "machine learning",
+    "the internet"
+]
+
+# Just replace {concept} with any of these and it works!
+```
+
+### Example 5: What The Output Looks Like
+
+When you run the chain with "neural networks", here's what you might get:
+
+```
+Chain Input:
+{
+  "concept": "neural networks"
+}
+
+Template After Formatting:
+"Explain the following concept in simple terms: neural networks"
+
+AI Response:
+"Neural networks are computer systems inspired by how our brains work.
+They're made up of connected nodes that pass information to each other,
+learning patterns from data. Kind of like how your brain learns by
+connecting neurons. They're used in things like image recognition,
+language translation, and chatbots like ChatGPT."
+```
+
+---
+
 ## Inside the Code
 
 ### What Each File Does
